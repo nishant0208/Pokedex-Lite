@@ -1,10 +1,31 @@
-export default function PokedexPage() {
+import { getPokemonList } from "@/lib/pokeApi";
+
+const PAGE_SIZE = 20;
+
+export default async function PokedexPage({
+  searchParams,
+}: {
+  searchParams: { page?: string };
+}) {
+  const page = Number(searchParams.page ?? "1");
+  const offset = (page - 1) * PAGE_SIZE;
+
+  const data = await getPokemonList(PAGE_SIZE, offset);
+
   return (
-    <div>
-      <h1 className="mb-2 text-2xl font-bold">Pokédex</h1>
-      <p className="text-gray-600">
-        Pokémon listing will be implemented in Sprint 2.
-      </p>
-    </div>
+    <section>
+      <h1 className="mb-4 text-2xl font-bold">Pokédex</h1>
+
+      <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+        {data.results.map((pokemon: { name: string }) => (
+          <li
+            key={pokemon.name}
+            className="rounded-lg border bg-white p-4 text-center hover:shadow transition"
+          >
+            {pokemon.name}
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
