@@ -3,11 +3,11 @@ import Link from "next/link";
 export default function HomePage() {
   return (
     <section className="flex min-h-[75vh] flex-col items-center justify-center text-center">
-      <h1 className="mb-4 text-4xl font-bold md:text-5xl">
+      <h1 className="mb-4 text-4xl font-bold text-gray-900 md:text-5xl">
         Welcome to <span className="text-red-500">Pokédex Lite</span>
       </h1>
 
-      <p className="mb-8 max-w-xl text-gray-600">
+      <p className="mb-8 max-w-xl text-gray-700">
         A fast, modern Pokédex built with Next.js, TypeScript, and PokéAPI.
       </p>
 

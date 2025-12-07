@@ -1,3 +1,4 @@
+import PokemonCard from "@/components/pokedex/PokemonCard";
 import { getPokemonList } from "@/lib/pokeApi";
 
 const PAGE_SIZE = 20;
@@ -14,19 +15,25 @@ export default async function PokedexPage({
   const data = await getPokemonList(PAGE_SIZE, offset);
 
   return (
-    <section>
-      <h1 className="mb-4 text-2xl font-bold">Pokédex</h1>
+    <section className="text-gray-900">
+      <h1 className="mb-6 text-3xl font-bold text-red-600">Pokédex</h1>
 
+      import PokemonCard from "@/components/pokedex/PokemonCard";
+      return(
       <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-        {data.results.map((pokemon: { name: string }) => (
-          <li
-            key={pokemon.name}
-            className="rounded-lg border bg-white p-4 text-center capitalize hover:shadow transition"
-          >
-            {pokemon.name}
-          </li>
-        ))}
+        {data.results.map(
+          (pokemon: { name: string; url: string }) => (
+            <PokemonCard
+              key={pokemon.name}
+              name={pokemon.name}
+              url={pokemon.url}
+            />
+          )
+        )}
       </ul>
+
+      );
+
     </section>
   );
 }
