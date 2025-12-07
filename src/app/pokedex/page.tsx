@@ -5,11 +5,12 @@ const PAGE_SIZE = 20;
 export default async function PokedexPage({
   searchParams,
 }: {
-  searchParams: { page?: string };
+  searchParams?: Promise<{ page?: string }>;
 }) {
-  const page = Number(searchParams.page ?? "1");
-  const offset = (page - 1) * PAGE_SIZE;
+  const resolvedSearchParams = await searchParams;
+  const page = Number(resolvedSearchParams?.page ?? "1");
 
+  const offset = (page - 1) * PAGE_SIZE;
   const data = await getPokemonList(PAGE_SIZE, offset);
 
   return (
@@ -20,7 +21,7 @@ export default async function PokedexPage({
         {data.results.map((pokemon: { name: string }) => (
           <li
             key={pokemon.name}
-            className="rounded-lg border bg-white p-4 text-center hover:shadow transition"
+            className="rounded-lg border bg-white p-4 text-center capitalize hover:shadow transition"
           >
             {pokemon.name}
           </li>
