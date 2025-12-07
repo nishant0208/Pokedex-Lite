@@ -25,4 +25,33 @@ export async function searchPokemonByName(name: string) {
 
   return res.json();
 }
+export async function getPokemonByType(type: string) {
+  const res = await fetch(
+    `${BASE_URL}/type/${type}`,
+    { cache: "no-store" }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch Pokémon by type");
+  }
+
+  const data = await res.json();
+
+  return data.pokemon.map(
+    (p: { pokemon: { name: string; url: string } }) =>
+      p.pokemon
+  );
+}
+export async function getPokemonDetails(name: string) {
+  const res = await fetch(
+    `https://pokeapi.co/api/v2/pokemon/${name}`,
+    { cache: "no-store" }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch Pokémon details");
+  }
+
+  return res.json();
+}
 

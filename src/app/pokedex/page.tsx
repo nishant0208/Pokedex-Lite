@@ -1,7 +1,8 @@
 import PokemonCard from "@/components/pokedex/PokemonCard";
 import Pagination from "@/components/common/Pagination";
 import SearchInput from "@/components/common/SearchInput";
-import { getPokemonList, searchPokemonByName } from "@/lib/pokeApi";
+import TypeFilter from "@/components/common/TypeFilter";
+import { getPokemonList, searchPokemonByName, getPokemonByType } from "@/lib/pokeApi";
 
 const PAGE_SIZE = 20;
 
@@ -11,35 +12,36 @@ export default async function PokedexPage({
   searchParams?: Promise<{
     page?: string;
     search?: string;
+    type?: string;
   }>;
 }) {
   const resolvedSearchParams = await searchParams;
   const page = Number(resolvedSearchParams?.page ?? "1");
   const search = resolvedSearchParams?.search;
+  const type = resolvedSearchParams?.type;
 
   let pokemons: { name: string; url: string }[] = [];
   let hasNextPage = false;
 
   if (search) {
     const result = await searchPokemonByName(search);
-
     if (result) {
-      pokemons = [
-        {
-          name: result.name,
-          url: `https://pokeapi.co/api/v2/pokemon/${result.id}/`,
-        },
-      ];
+      pokemons = [{ name: result.name, url: `https://pokeapi.co/api/v2/pokemon/${result.id}/` }];
     }
+  } else if (type) {
+    pokemons = await getPokemonByType(type);
   } else {
     const offset = (page - 1) * PAGE_SIZE;
     const data = await getPokemonList(PAGE_SIZE, offset);
-
     pokemons = data.results;
     hasNextPage = offset + PAGE_SIZE < data.count;
   }
 
-  <SearchInput />
+
+  <div className="mb-6 flex flex-col gap-4">
+    <SearchInput />
+    <TypeFilter />
+  </div>
 
 
   return (
@@ -65,9 +67,9 @@ export default async function PokedexPage({
             </p>
           )
         }
-        
+
       </ul>
-      {!search && (
+      {!search && !type && (
         <Pagination
           currentPage={page}
           hasNextPage={hasNextPage}
