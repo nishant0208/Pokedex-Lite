@@ -12,3 +12,17 @@ export async function getPokemonList(limit: number, offset: number) {
 
   return res.json();
 }
+
+export async function searchPokemonByName(name: string) {
+  const res = await fetch(
+    `${BASE_URL}/pokemon/${name.toLowerCase()}`,
+    { cache: "no-store" }
+  );
+
+  if (!res.ok) {
+    return null;
+  }
+
+  return res.json();
+}
+
