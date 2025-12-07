@@ -1,4 +1,5 @@
 import PokemonCard from "@/components/pokedex/PokemonCard";
+import Pagination from "@/components/common/Pagination";
 import { getPokemonList } from "@/lib/pokeApi";
 
 const PAGE_SIZE = 20;
@@ -13,6 +14,8 @@ export default async function PokedexPage({
 
   const offset = (page - 1) * PAGE_SIZE;
   const data = await getPokemonList(PAGE_SIZE, offset);
+  const hasNextPage = offset + PAGE_SIZE < data.count;
+
 
   return (
     <section className="text-gray-900">
@@ -31,6 +34,11 @@ export default async function PokedexPage({
           )
         )}
       </ul>
+      <Pagination
+        currentPage={page}
+        hasNextPage={hasNextPage}
+      />
+
 
       );
 
