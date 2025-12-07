@@ -1,44 +1,49 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
 
 export default function SearchInput() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const initialValue = searchParams.get("search") ?? "";
 
-  const [value, setValue] = useState(initialValue);
+  const [mounted, setMounted] = useState(false);
+  const [value, setValue] = useState("");
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  // ✅ Prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+    setValue(searchParams.get("search") ?? "");
+  }, [searchParams]);
 
-    if (!value.trim()) {
-      router.push("/pokedex");
+  if (!mounted) return null;
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newValue = e.target.value;
+    setValue(newValue);
+
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (newValue) {
+      params.set("search", newValue);
+      params.delete("page");
     } else {
-      router.push(`/pokedex?search=${value.trim()}`);
+      params.delete("search");
     }
+
+    router.push(`/pokedex?${params.toString()}`);
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mb-6 flex gap-2">
-      <input
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        placeholder="Search Pokémon by name..."
-        className="w-full rounded-md border px-4 py-2 text-sm
-                   text-gray-900 focus:outline-none focus:ring-2
-                   focus:ring-red-400"
-      />
-
-      <button
-        type="submit"
-        className="rounded-md bg-red-500 px-4 py-2
-                   text-sm font-medium text-white hover:bg-red-600"
-      >
-        Search
-      </button>
-    </form>
+    <input
+      value={value}
+      onChange={handleChange}
+      placeholder="Search Pokémon..."
+      className="w-full rounded-full border border-gray-300
+                 bg-gray-50 px-5 py-3 text-sm
+                 text-gray-900
+                 focus:outline-none focus:ring-2 focus:ring-red-400
+                 dark:bg-gray-800 dark:text-gray-100"
+    />
   );
 }
- 

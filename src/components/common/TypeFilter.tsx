@@ -22,8 +22,11 @@ export default function TypeFilter() {
     <select
       value={currentType}
       onChange={(e) => handleChange(e.target.value)}
-      className="mb-6 rounded-md border px-4 py-2 text-sm text-gray-900"
+      className="rounded-full bg-gray-100 px-4 py-3 text-sm font-medium text-gray-800
+             transition hover:bg-gray-200 focus:outline-none focus:ring-2
+             focus:ring-blue-300"
     >
+
       <option value="">All Types</option>
       {TYPES.map((type) => (
         <option key={type} value={type}>
