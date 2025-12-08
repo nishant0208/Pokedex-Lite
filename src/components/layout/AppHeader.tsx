@@ -12,6 +12,7 @@ export default function AppHeader() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
 
         {/* ✅ Logo */}
+
         <Link href="/" className="text-xl font-bold">
           Pokédex <span className="text-red-400">Lite</span>
         </Link>
