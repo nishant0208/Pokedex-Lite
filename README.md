@@ -7,7 +7,7 @@ This project focuses on **excellent UI/UX**, **glassmorphism design**, **smooth 
 ---
 
 ## 🚀 Live Demo
-👉 https://pokedex-lite.vercel.app  
+👉 [https://pokedex-lite.vercel.app ](https://pokedex-lite-pink.vercel.app/) 
 
 ---
 ## 🖼️ Screenshots
