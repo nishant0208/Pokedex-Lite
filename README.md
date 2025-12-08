@@ -32,6 +32,20 @@ This project focuses on **excellent UI/UX**, **glassmorphism design**, **smooth 
 ![Pokemon Modal](screenshots/pokemon-modal.png)
 
 ---
+## 🖼️ Mobile view Screenshots
+### Home Page
+![Home Page](screenshots/mobile-home.jpg)
+
+### Pokédex Listing
+![Pokédex](screenshots/mobile-pokedexlist.jpg)
+
+### Filter
+![Filter](screenshots/mobile-filter.jpg)
+
+### Pokémon app mobile navbar
+![Mobile Navbar](mobile-nav.jpg)
+
+---
 
 ## ✨ Features
 
