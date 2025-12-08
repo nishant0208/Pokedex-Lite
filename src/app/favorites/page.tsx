@@ -1,32 +1,30 @@
-"use client";
-
+import { auth } from "@clerk/nextjs/server";
+import Link from "next/link";
 import PokemonCard from "@/components/pokedex/PokemonCard";
-import { useFavorites } from "@/hooks/userFavorites";
+import FavoritesClient from "./FavoritesClient";
 
 export default function FavoritesPage() {
-  const { favorites } = useFavorites();
+  const { userId } = auth();
 
-  return (
-    <section>
-      <h1 className="mb-6 text-3xl font-bold text-gray-900">
-        Favorites
-      </h1>
-
-      {favorites.length === 0 ? (
-        <p className="text-gray-600">
-          You have not favorited any Pokémon yet.
+  // 🔒 Not signed in
+  if (!userId) {
+    return (
+      <section className="flex flex-col items-center justify-center py-20 text-center">
+        <h1 className="mb-4 text-3xl font-bold">Favorites</h1>
+        <p className="mb-6 text-gray-600">
+          Please sign in to view your favorite Pokémon.
         </p>
-      ) : (
-        <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-          {favorites.map((pokemon) => (
-            <PokemonCard
-              key={pokemon.name}
-              name={pokemon.name}
-              url={pokemon.url}
-            />
-          ))}
-        </ul>
-      )}
-    </section>
-  );
+
+        <Link
+          href="/sign-in"
+          className="rounded-full bg-red-500 px-6 py-3 text-white transition hover:bg-red-600"
+        >
+          Sign In
+        </Link>
+      </section>
+    );
+  }
+
+  // ✅ Signed in → render client favorites
+  return <FavoritesClient />;
 }

@@ -1,39 +1,76 @@
-import Link from "next/link";
+"use client";
 
-type PaginationProps = {
+import Link from "next/link";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+type Props = {
   currentPage: number;
   hasNextPage: boolean;
 };
 
-export default function Pagination({
-  currentPage,
-  hasNextPage,
-}: PaginationProps) {
+export default function Pagination({ currentPage, hasNextPage }: Props) {
+  const pages = [1, 2, 3, "...", 8, 9, 10];
+
   return (
-    <div className="mt-8 flex items-center justify-center gap-4">
-      {currentPage > 1 && (
+    <div className="mt-10 flex justify-center">
+      <div className="flex items-center overflow-hidden rounded-xl
+                      border border-gray-300
+                      bg-white shadow-sm
+                      dark:border-gray-700 dark:bg-gray-700">
+        
+        {/* ⬅ Prev */}
         <Link
-          href={`/pokedex?page=${currentPage - 1}`}
-          className="rounded-md border bg-white px-4 py-2 text-sm
-                     text-gray-800 hover:bg-gray-100 transition"
+          href={`/pokedex?page=${Math.max(1, currentPage - 1)}`}
+          className="flex h-10 w-10 items-center justify-center
+                     border-r border-gray-300
+                     hover:bg-gray-100
+                     dark:border-gray-500 dark:hover:bg-gray-800"
         >
-          ← Previous
+          <ChevronLeft size={18} />
         </Link>
-      )}
 
-      <span className="text-sm font-medium text-gray-600">
-        Page {currentPage}
-      </span>
+        {/* Pages */}
+        {pages.map((p, i) =>
+          p === "..." ? (
+            <span
+              key={i}
+              className="flex h-10 w-10 items-center justify-center 
+                         text-gray-500"
+            >
+              …
+            </span>
+          ) : (
+            <Link
+              key={i}
+              href={`/pokedex?page=${p}`}
+              className={`flex h-10 w-10 items-center justify-center
+                border-r border-gray-500 text-sm font-medium
+                transition
+                dark:border-gray-500
+                ${
+                  p === currentPage
+                    ? "bg-red-500 text-white"
+                    : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                }`}
+            >
+              {p}
+            </Link>
+          )
+        )}
 
-      {hasNextPage && (
+        {/* ➡ Next */}
         <Link
           href={`/pokedex?page=${currentPage + 1}`}
-          className="rounded-md border bg-white px-4 py-2 text-sm
-                     text-gray-800 hover:bg-gray-100 transition"
+          className={`flex h-10 w-10 items-center justify-center
+                      hover:bg-gray-100
+                      dark:hover:bg-gray-800
+                      ${
+                        hasNextPage ? "" : "pointer-events-none opacity-40"
+                      }`}
         >
-          Next →
+          <ChevronRight size={18} />
         </Link>
-      )}
+      </div>
     </div>
   );
 }

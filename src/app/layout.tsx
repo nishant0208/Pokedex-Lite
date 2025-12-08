@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import AppHeader from "@/components/layout/AppHeader";
+import { ClerkProvider } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "Pokedex Lite",
@@ -13,17 +14,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className="min-h-screen bg-[#f6f8fc] text-gray-900 antialiased
-             dark:bg-gray-900 dark:text-gray-100"
-      >
-
-        <AppHeader />
-        <main className="mx-auto max-w-7xl px-4 py-6">
-          {children}
-        </main>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className="min-h-screen bg-[#f6f8fc] text-gray-900 antialiased
+                     dark:bg-gray-900 dark:text-gray-100"
+        >
+          <AppHeader />
+          <main className="mx-auto max-w-7xl px-4 py-6">
+            {children}
+          </main>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
