@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import AppHeader from "@/components/layout/AppHeader";
 import { ClerkProvider } from "@clerk/nextjs";
+import PageTransition from "@/components/ui/PageTransition";
+
 
 export const metadata: Metadata = {
   title: "Pokedex Lite",
@@ -22,8 +24,9 @@ export default function RootLayout({
         >
           <AppHeader />
           <main className="mx-auto max-w-7xl px-4 py-6">
-            {children}
+            <PageTransition>{children}</PageTransition>
           </main>
+
         </body>
       </html>
     </ClerkProvider>
