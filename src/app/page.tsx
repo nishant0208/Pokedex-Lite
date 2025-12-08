@@ -1,13 +1,76 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import Image from "next/image";
+import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useEffect, useState } from "react";
+
+function FloatingPokeballs() {
+  const positions = [
+    { top: "10%", left: "5%" },
+    { top: "20%", left: "80%" },
+    { top: "60%", left: "10%" },
+    { top: "70%", left: "75%" },
+  ];
+
+  return (
+    <div className="absolute inset-0 -z-10 overflow-hidden">
+      {positions.map((pos, i) => (
+        <motion.div
+          key={i}
+          className="absolute opacity-30"
+          style={pos}
+          animate={{ y: [0, -25, 0] }}
+          transition={{
+            duration: 6 + i,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        >
+          <Image
+            src="/pokeball.png"
+            alt="Pokéball"
+            width={80}
+            height={80}
+            className="select-none"
+            priority={false}
+          />
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+
+
+function AnimatedCounter({ value }: { value: number }) {
+  const motionValue = useMotionValue(0);
+  const spring = useSpring(motionValue, { duration: 2 });
+  const [display, setDisplay] = useState(0);
+
+  useEffect(() => {
+    motionValue.set(value);
+  }, [value, motionValue]);
+
+  useEffect(() => {
+    const unsubscribe = spring.on("change", (latest) => {
+      setDisplay(Math.floor(latest));
+    });
+
+    return unsubscribe;
+  }, [spring]);
+
+  return <span className="font-semibold">{display}+</span>;
+}
+
 
 
 export default function HomePage() {
   return (
     <section className="relative flex min-h-[80vh] flex-col items-center justify-center overflow-hidden text-center">
-      
+
+      <FloatingPokeballs />
+
       {/* 🌈 Soft animated background glow */}
       <motion.div
         className="absolute -z-10 h-[500px] w-[700px] rounded-full
@@ -37,6 +100,16 @@ export default function HomePage() {
         A fast, modern Pokédex built with Next.js, TypeScript,
         Framer Motion and PokéAPI.
       </motion.p>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="mb-6 text-sm font-medium text-gray-500 dark:text-gray-400"
+      >
+        <AnimatedCounter value={1025} /> Pokémon available
+      </motion.div>
+
 
       {/* 🔴 CTA Button */}
       <motion.div
