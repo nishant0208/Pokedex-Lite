@@ -15,25 +15,22 @@ function getPokemonId(url: string) {
   return url.split("/").filter(Boolean).pop();
 }
 
-// 🌈 Simple type-color heuristic (no extra fetch)
-const TYPE_COLORS: Record<string, string> = {
-  fire: "from-red-400 to-red-600",
-  water: "from-blue-400 to-blue-600",
-  grass: "from-green-400 to-green-600",
-  electric: "from-yellow-400 to-yellow-500",
-  psychic: "from-pink-400 to-pink-600",
-  ice: "from-cyan-300 to-cyan-500",
-  dragon: "from-indigo-500 to-purple-600",
-  dark: "from-gray-700 to-gray-900",
-  fairy: "from-pink-300 to-pink-500",
-  fighting: "from-orange-600 to-red-700",
-  ground: "from-amber-600 to-yellow-700",
-  rock: "from-stone-500 to-stone-700",
-  bug: "from-lime-500 to-green-600",
-  poison: "from-purple-500 to-indigo-600",
-  ghost: "from-violet-600 to-purple-800",
-};
+/* 🌈 Gradient pool (deterministic, no fetch) */
+const GRADIENTS = [
+  "from-red-400 to-red-600",
+  "from-blue-400 to-blue-600",
+  "from-green-400 to-green-600",
+  "from-yellow-400 to-yellow-500",
+  "from-pink-400 to-pink-600",
+  "from-purple-400 to-purple-600",
+  "from-amber-400 to-orange-500",
+  "from-cyan-400 to-sky-500",
+];
 
+function getGradientFromName(name: string) {
+  const hash = [...name].reduce((sum, c) => sum + c.charCodeAt(0), 0);
+  return GRADIENTS[hash % GRADIENTS.length];
+}
 
 // ✅ Lazy-loaded modal (correct)
 const PokemonDetailModal = dynamic(
@@ -51,9 +48,8 @@ export default function PokemonCard({ name, url }: PokemonCardProps) {
 
   const favorite = isFavorite(name);
 
-  // ✅ Deterministic color (no fetch)
-  const gradient =
-    TYPE_COLORS[name[0]] ?? "from-gray-300 to-gray-400";
+  // ✅ FIXED: deterministic gradient based on name
+  const gradient = getGradientFromName(name);
 
   return (
     <>
@@ -67,13 +63,13 @@ export default function PokemonCard({ name, url }: PokemonCardProps) {
                    text-gray-900 dark:text-gray-100
                    p-4 text-center shadow-sm hover:shadow-xl"
       >
-        {/* 🌈 Type-based background aura */}
+        {/* 🌈 Type-style background aura */}
         <div
           className={`pointer-events-none absolute inset-0
-                      opacity-20 bg-gradient-to-br ${gradient}`}
+                      opacity-25 bg-gradient-to-br ${gradient}`}
         />
 
-        {/* ❤️ Favorite button */}
+        {/* ❤️ Favorite */}
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -84,9 +80,9 @@ export default function PokemonCard({ name, url }: PokemonCardProps) {
           {favorite ? "❤️" : "🤍"}
         </button>
 
-        {/* 🖼 Pokémon image */}
-        <div className="relative mx-auto mb-3  flex h-28 w-28 items-center justify-center
-                rounded-full bg-white/70 dark:bg-gray-700/70">
+        {/* 🖼 Image */}
+        <div className="relative mx-auto mb-3 flex h-28 w-28 items-center justify-center
+                        rounded-full bg-white/70 dark:bg-gray-700/70">
           <Image
             src={imageUrl}
             alt={name}
@@ -96,12 +92,12 @@ export default function PokemonCard({ name, url }: PokemonCardProps) {
         </div>
 
         {/* 📛 Name */}
-        <p className="font-semibold capitalize">
+        <p className="font-semibold capitalize text-white drop-shadow-sm">
           {name}
         </p>
       </motion.div>
 
-      {/* 🎴 Detail Modal */}
+      {/* 🎴 Modal */}
       {open && (
         <PokemonDetailModal
           name={name}
