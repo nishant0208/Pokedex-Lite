@@ -104,4 +104,95 @@ This creates a **premium frosted-glass UI** without harming performance.
 ---
 
 ## 📂 Project Structure
+src/
+├── app/
+│ ├── layout.tsx
+│ ├── page.tsx
+│ ├── pokedex/
+│ ├── favorites/
+│ ├── sign-in/
+│ └── sign-up/
+│
+├── components/
+│ ├── pokedex/
+│ │ ├── PokemonCard.tsx # Glassmorphism cards
+│ │ └── PokemonDetailModal.tsx
+│ ├── common/
+│ ├── ui/
+│ └── layout/
+│
+├── hooks/
+├── lib/
+└── middleware.ts
 
+
+---
+
+## 🎞 Animations Used
+
+- ✅ Glass card hover lift & glow
+- ✅ Page slide transitions
+- ✅ Modal entrance / exit
+- ✅ Floating Pokéballs (landing page)
+- ✅ Pokéball CTA transition
+- ✅ Motion-value powered counters
+
+All animations are:
+- GPU-friendly
+- Lightweight
+- Non-blocking
+- Accessibility-conscious
+
+---
+
+## 🔧 Environment Variables
+
+Create a `.env.local` file in the project root:
+
+```env
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=///
+CLERK_SECRET_KEY=///
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/pokedex
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/pokedex
+
+▶️ Running Locally
+git clone https://github.com/nishant0208/Pokedex-Lite.git
+cd pokedex-lite
+npm install
+npm run dev
+
+http://localhost:3000
+
+🔄 Development Workflow
+
+Agile, sprint-based development
+
+Feature-wise commits
+
+UI polish after core stability
+
+Performance & UX focused improvements
+
+Production-ready mindset throughout
+
+🧑‍💻 Author
+
+Nishant Tiwary
+Final Year Engineering Student
+Frontend-focused | UI/UX-driven | Next.js Enthusiast
+
+GitHub: https://github.com/nishant0208
+
+⭐ Future Enhancements
+
+🧬 Pokémon evolution chains
+
+📊 Animated stat bars
+
+🧊 Glassmorphism modal upgrade
+
+🧠 Smart Pokémon filtering & ranking
+
+📦 Offline / PWA support
