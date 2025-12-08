@@ -71,12 +71,24 @@ export default function HomePage() {
   const router = useRouter();
   const [playTransition, setPlayTransition] = useState(false);
 
+  const audio = typeof Audio !== "undefined"
+  ? new Audio("/sounds/pokeball.mp3")
+  : null;
+
   const enterPokedex = () => {
-    setPlayTransition(true);
-    setTimeout(() => {
-      router.push("/pokedex");
-    }, 600);
-  };
+  if (audio) {
+    audio.currentTime = 0;
+    audio.volume = 0.6;
+    audio.play();
+  }
+
+  setPlayTransition(true);
+
+  setTimeout(() => {
+    router.push("/pokedex");
+  }, 600);
+};
+
 
   return (
     <section className="relative flex min-h-[80vh] flex-col items-center justify-center overflow-hidden text-center">
