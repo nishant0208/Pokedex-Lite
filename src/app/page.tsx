@@ -4,6 +4,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import PokedexTransition from "@/components/ui/pokedexTransitrion";
+
+/* ---------------- Floating Pokéballs ---------------- */
 
 function FloatingPokeballs() {
   const positions = [
@@ -33,7 +37,6 @@ function FloatingPokeballs() {
             width={80}
             height={80}
             className="select-none"
-            priority={false}
           />
         </motion.div>
       ))}
@@ -41,7 +44,7 @@ function FloatingPokeballs() {
   );
 }
 
-
+/* ---------------- Animated Counter ---------------- */
 
 function AnimatedCounter({ value }: { value: number }) {
   const motionValue = useMotionValue(0);
@@ -56,19 +59,32 @@ function AnimatedCounter({ value }: { value: number }) {
     const unsubscribe = spring.on("change", (latest) => {
       setDisplay(Math.floor(latest));
     });
-
     return unsubscribe;
   }, [spring]);
 
   return <span className="font-semibold">{display}+</span>;
 }
 
-
+/* ---------------- Home Page ---------------- */
 
 export default function HomePage() {
+  const router = useRouter();
+  const [playTransition, setPlayTransition] = useState(false);
+
+  const enterPokedex = () => {
+    setPlayTransition(true);
+    setTimeout(() => {
+      router.push("/pokedex");
+    }, 600);
+  };
+
   return (
     <section className="relative flex min-h-[80vh] flex-col items-center justify-center overflow-hidden text-center">
 
+      {/* ✅ Pokédex transition overlay */}
+      <PokedexTransition show={playTransition} />
+
+      {/* 🎈 Floating Pokéballs */}
       <FloatingPokeballs />
 
       {/* 🌈 Soft animated background glow */}
@@ -86,8 +102,7 @@ export default function HomePage() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="mb-4 text-4xl font-extrabold sm:text-5xl"
       >
-        Welcome to{" "}
-        <span className="text-red-500">Pokédex Lite</span>
+        Welcome to <span className="text-red-500">Pokédex Lite</span>
       </motion.h1>
 
       {/* 📘 Subtitle */}
@@ -101,6 +116,7 @@ export default function HomePage() {
         Framer Motion and PokéAPI.
       </motion.p>
 
+      {/* 🔢 Pokémon Count */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -110,7 +126,6 @@ export default function HomePage() {
         <AnimatedCounter value={1025} /> Pokémon available
       </motion.div>
 
-
       {/* 🔴 CTA Button */}
       <motion.div
         whileHover={{ scale: 1.07 }}
@@ -118,16 +133,15 @@ export default function HomePage() {
         animate={{ y: [0, -6, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
       >
-        <Link
-          href="/pokedex"
+        <button
+          onClick={enterPokedex}
           className="inline-block rounded-full bg-red-500 px-8 py-4
                      text-lg font-semibold text-white shadow-lg
                      hover:bg-red-600"
         >
           Enter Pokédex
-        </Link>
+        </button>
       </motion.div>
     </section>
   );
 }
-
