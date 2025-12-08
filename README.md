@@ -10,6 +10,21 @@ This project focuses on **excellent UI/UX**, **glassmorphism design**, **smooth 
 👉 https://pokedex-lite.vercel.app  
 
 ---
+## 🖼️ Screenshots
+
+### Home Page
+![Home Page](screenshots/home.png)
+
+### Pokédex Listing
+![Pokédex](screenshots/pokedex.png)
+
+### Favorites
+![Favorites](screenshots/favorites.png)
+
+### Pokémon Detail Modal
+![Pokemon Modal](screenshots/pokemon-modal.png)
+
+---
 
 ## ✨ Features
 
