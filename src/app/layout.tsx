@@ -13,8 +13,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="min-h-screen bg-gradient-to-br from-red-50 via-white to-blue-50 text-gray-900 antialiased">
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className="min-h-screen bg-[#f6f8fc] text-gray-900 antialiased
+             dark:bg-gray-900 dark:text-gray-100"
+      >
+
         <AppHeader />
         <main className="mx-auto max-w-7xl px-4 py-6">
           {children}

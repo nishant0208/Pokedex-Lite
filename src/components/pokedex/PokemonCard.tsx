@@ -85,7 +85,8 @@ export default function PokemonCard({ name, url }: PokemonCardProps) {
         </button>
 
         {/* 🖼 Pokémon image */}
-        <div className="relative mx-auto mb-3 h-24 w-24">
+        <div className="relative mx-auto mb-3  flex h-28 w-28 items-center justify-center
+                rounded-full bg-white/70 dark:bg-gray-700/70">
           <Image
             src={imageUrl}
             alt={name}

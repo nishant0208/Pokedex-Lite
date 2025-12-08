@@ -40,87 +40,94 @@ export default function PokemonDetailModal({ name, onClose }: Props) {
       .finally(() => setLoading(false));
   }, [name]);
 
-  return (
-    <AnimatePresence>
-      {name && (
+return (
+  <AnimatePresence>
+    {name && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
+        {/* ✅ BACKDROP */}
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+          className="absolute inset-0 bg-black/40 backdrop-blur-sm"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
+        />
+
+        {/* ✅ MODAL */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+          onClick={(e) => e.stopPropagation()}
+          className="relative z-10 w-[90%] max-w-md rounded-2xl
+                     bg-white p-6 shadow-xl
+                     dark:bg-gray-800"
         >
-          <motion.div
-            className="relative w-full max-w-md rounded-xl bg-white p-6"
-            initial={{ scale: 0.9, y: 20, opacity: 0 }}
-            animate={{ scale: 1, y: 0, opacity: 1 }}
-            exit={{ scale: 0.9, y: 20, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            onClick={(e) => e.stopPropagation()} // prevent close on content click
+          {/* ❌ Close button */}
+          <button
+            onClick={onClose}
+            className="absolute right-4 top-4 text-xl text-gray-500 hover:text-gray-800 dark:hover:text-gray-200"
           >
-            <button
-              onClick={onClose}
-              className="absolute right-4 top-4 text-xl"
-            >
-              ✕
-            </button>
+            ✕
+          </button>
 
-            {loading && <PokemonDetailSkeleton />}
+          {/* ⏳ Loading */}
+          {loading && <PokemonDetailSkeleton />}
 
+          {/* ✅ Data */}
+          {data && (
+            <>
+              <motion.div
+                className="relative mx-auto mb-4 h-32 w-32"
+                initial={{ scale: 0.85 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.1 }}
+              >
+                <Image
+                  src={data.sprites.other["official-artwork"].front_default}
+                  alt={data.name}
+                  fill
+                  className="object-contain"
+                />
+              </motion.div>
 
-            {data && (
-              <>
-                <motion.div
-                  className="relative mx-auto mb-4 h-32 w-32"
-                  initial={{ scale: 0.8 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.1 }}
-                >
-                  <Image
-                    src={
-                      data.sprites.other["official-artwork"].front_default
-                    }
-                    alt={data.name}
-                    fill
-                    className="object-contain"
-                  />
-                </motion.div>
+              <h2 className="mb-2 text-center text-2xl font-bold capitalize">
+                {data.name}
+              </h2>
 
-                <h2 className="mb-2 text-center text-2xl font-bold capitalize">
-                  {data.name}
-                </h2>
+              <div className="mb-4 flex justify-center gap-2">
+                {data.types.map((t: any) => (
+                  <span
+                    key={t.type.name}
+                    className="rounded-full bg-gray-100 px-3 py-1 text-sm capitalize
+                               dark:bg-gray-700"
+                  >
+                    {t.type.name}
+                  </span>
+                ))}
+              </div>
 
-                <div className="mb-4 flex justify-center gap-2">
-                  {data.types.map((t: any) => (
-                    <span
-                      key={t.type.name}
-                      className="rounded-full bg-gray-100 px-3 py-1 text-sm capitalize"
-                    >
-                      {t.type.name}
+              <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                {data.stats.map((stat: any) => (
+                  <div
+                    key={stat.stat.name}
+                    className="flex justify-between"
+                  >
+                    <span className="capitalize">
+                      {stat.stat.name}
                     </span>
-                  ))}
-                </div>
-
-                <div className="space-y-2 text-sm text-gray-700">
-                  {data.stats.map((stat: any) => (
-                    <div
-                      key={stat.stat.name}
-                      className="flex justify-between"
-                    >
-                      <span className="capitalize">
-                        {stat.stat.name}
-                      </span>
-                      <span className="font-medium">
-                        {stat.base_stat}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
-          </motion.div>
+                    <span className="font-medium">
+                      {stat.base_stat}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </motion.div>
-      )}
-    </AnimatePresence>
-  );
+      </div>
+    )}
+  </AnimatePresence>
+);
 }
